@@ -1,5 +1,5 @@
-const questionsBoard = ".q-board";
-const questionBox = ".q-box";
+const questionsBoard = ".board";
+const questionBox = ".box";
 const modalBox = ".modal";
 const modalContent = ".modal-content";
 
@@ -19,23 +19,23 @@ function init() {
   $.getJSON("./questions.json", function (data) {
     questions = data.categories;
     $.each(questions, function (index, value) {
-      // TODO: change classes and restructure HTML
+      let qMarkup;
+      let qArr = [];
 
-      const markup = `<div class="category q-box" id="q-${index}"> ${value.category} </div>`;
-      $(questionsBoard).append(markup);
+      $.each(value.questions, function (index, q) {
+        qArr.push(`<div class="box" id="q-${index}"> ${q.question} </div>`);
+      });
 
-      //   const questions_per_category = value.questions;
-      //   $.each(questions_per_category, function (index, value) {
-      //     const qMarkup = `<div class="q-box" id="cq-${index}"> $${value.amount} </div>`;
-      //     $(".category").append(qMarkup);
-      //   });
-      //   render the contents of the json file
+      qMarkup = qArr.join("");
+
+      console.log(qMarkup);
+
+      const categoryTitle = `<div class="box"> ${value.category} </div>`;
+      const categoryCol = `<div class="category"> ${categoryTitle} ${qMarkup} </div>`;
+      $(questionsBoard).append(categoryCol);
     });
   }).then(function () {
-    // assign event handlers
-    // $(".q-box").on("click", function (e) {
-    //   showQuestion(e.target.id.slice(2));
-    // });
+    // assign event handlers here
   });
 }
 

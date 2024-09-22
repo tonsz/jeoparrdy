@@ -1,0 +1,184 @@
+{
+  "questions": [
+    {
+      "question": "Who directed the movie 'Inception'?",
+      "category": "Movies",
+      "choices": [
+        "Christopher Nolan",
+        "Steven Spielberg",
+        "James Cameron",
+        "Quentin Tarantino"
+      ],
+      "correctAnswer": "Christopher Nolan",
+      "amount": "200"
+    },
+    {
+      "question": "Which movie won the Academy Award for Best Picture in 2020?",
+      "category": "Movies",
+      "choices": ["1917", "Joker", "Parasite", "Once Upon a Time in Hollywood"],
+      "correctAnswer": "Parasite",
+      "amount": "400"
+    },
+    {
+      "question": "In the 'Harry Potter' series, what is the name of Harry’s pet owl?",
+      "category": "Movies",
+      "choices": ["Hedwig", "Errol", "Pigwidgeon", "Crookshanks"],
+      "correctAnswer": "Hedwig",
+      "amount": "600"
+    },
+    {
+      "question": "Who played the character of 'Forrest Gump' in the 1994 movie?",
+      "category": "Movies",
+      "choices": [
+        "Tom Hanks",
+        "Brad Pitt",
+        "Robin Williams",
+        "Leonardo DiCaprio"
+      ],
+      "correctAnswer": "Tom Hanks",
+      "amount": "800"
+    },
+    {
+      "question": "Which film features the iconic quote: 'Here's looking at you, kid'?",
+      "category": "Movies",
+      "choices": [
+        "Gone with the Wind",
+        "Casablanca",
+        "The Godfather",
+        "Citizen Kane"
+      ],
+      "correctAnswer": "Casablanca",
+      "amount": "1000"
+    },
+    {
+      "question": "Who is the author of the 'Harry Potter' series?",
+      "category": "Books",
+      "choices": [
+        "J.K. Rowling",
+        "J.R.R. Tolkien",
+        "George R.R. Martin",
+        "C.S. Lewis"
+      ],
+      "correctAnswer": "J.K. Rowling",
+      "amount": "200"
+    },
+    {
+      "question": "Which novel begins with 'Call me Ishmael'?",
+      "category": "Books",
+      "choices": [
+        "Moby Dick",
+        "The Great Gatsby",
+        "Pride and Prejudice",
+        "1984"
+      ],
+      "correctAnswer": "Moby Dick",
+      "amount": "400"
+    },
+    {
+      "question": "In which novel is the character 'Atticus Finch' featured?",
+      "category": "Books",
+      "choices": [
+        "To Kill a Mockingbird",
+        "The Catcher in the Rye",
+        "Of Mice and Men",
+        "Brave New World"
+      ],
+      "correctAnswer": "To Kill a Mockingbird",
+      "amount": "600"
+    },
+    {
+      "question": "Who wrote the novel '1984'?",
+      "category": "Books",
+      "choices": [
+        "George Orwell",
+        "Aldous Huxley",
+        "Ray Bradbury",
+        "Kurt Vonnegut"
+      ],
+      "correctAnswer": "George Orwell",
+      "amount": "800"
+    },
+    {
+      "question": "Which fantasy book series features the character 'Frodo Baggins'?",
+      "category": "Books",
+      "choices": [
+        "Harry Potter",
+        "The Chronicles of Narnia",
+        "The Lord of the Rings",
+        "His Dark Materials"
+      ],
+      "correctAnswer": "The Lord of the Rings",
+      "amount": "1000"
+    },
+    {
+      "question": "What is the largest country by land area?",
+      "category": "Geography",
+      "choices": ["Russia", "Canada", "China", "United States"],
+      "correctAnswer": "Russia",
+      "amount": "200"
+    },
+    {
+      "question": "Which desert is the largest in the world?",
+      "category": "Geography",
+      "choices": ["Sahara", "Gobi", "Kalahari", "Arabian"],
+      "correctAnswer": "Sahara",
+      "amount": "400"
+    },
+    {
+      "question": "What is the capital of Japan?",
+      "category": "Geography",
+      "choices": ["Seoul", "Tokyo", "Beijing", "Shanghai"],
+      "correctAnswer": "Tokyo",
+      "amount": "600"
+    },
+    {
+      "question": "Which river is the longest in the world?",
+      "category": "Geography",
+      "choices": ["Amazon", "Nile", "Yangtze", "Mississippi"],
+      "correctAnswer": "Nile",
+      "amount": "800"
+    },
+    {
+      "question": "Mount Everest is located in which mountain range?",
+      "category": "Geography",
+      "choices": ["Andes", "Rockies", "Himalayas", "Alps"],
+      "correctAnswer": "Himalayas",
+      "amount": "1000"
+    },
+    {
+      "question": "Which fruit is known for its high potassium content?",
+      "category": "Food",
+      "choices": ["Apple", "Banana", "Orange", "Grapes"],
+      "correctAnswer": "Banana",
+      "amount": "200"
+    },
+    {
+      "question": "Sushi is a type of cuisine from which country?",
+      "category": "Food",
+      "choices": ["China", "Japan", "Korea", "Thailand"],
+      "correctAnswer": "Japan",
+      "amount": "400"
+    },
+    {
+      "question": "Which cheese is traditionally used in a Greek salad?",
+      "category": "Food",
+      "choices": ["Feta", "Mozzarella", "Cheddar", "Parmesan"],
+      "correctAnswer": "Feta",
+      "amount": "600"
+    },
+    {
+      "question": "What is the main ingredient in guacamole?",
+      "category": "Food",
+      "choices": ["Tomato", "Cucumber", "Avocado", "Onion"],
+      "correctAnswer": "Avocado",
+      "amount": "800"
+    },
+    {
+      "question": "Which country is famous for its croissants?",
+      "category": "Food",
+      "choices": ["Italy", "France", "Germany", "Spain"],
+      "correctAnswer": "France",
+      "amount": "1000"
+    }
+  ]
+}
