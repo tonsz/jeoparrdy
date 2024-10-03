@@ -1,25 +1,48 @@
-.app {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+:root {
+  --bg-color: #1e0b30;
+  --box-color: rgb(126, 34, 195);
+  --title-color: #e6cd65;
+  --border-radius: 4px;
 }
-
+* {
+  padding: 0;
+  margin: 0;
+}
+.app {
+  height: 100vh;
+  text-align: center;
+  color: #fff;
+  background-color: var(--bg-color);
+  font-family: "Bebas Neue", sans-serif;
+}
 .board {
+  margin: 0 auto;
+  max-width: 800px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .box {
-  width: 300px;
-  height: 100px;
-  background-color: antiquewhite;
+  /* width: 180px; */
+  height: 80px;
+  background-color: var(--box-color);
+  color: var(--title-color);
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 10px;
   cursor: pointer;
+  border-radius: var(--border-radius);
 }
-
+.q {
+  font-size: 3em;
+}
+.sub-title {
+  font-size: 2.5rem;
+}
 .category {
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
@@ -29,24 +52,25 @@
 }
 
 .choices {
-  width: 100%;
+  margin-top: 20px;
   display: flex;
-  flex-wrap: wrap;
-
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .q-option {
-  width: 200px;
-  height: 100px;
-
-  border: 1px black solid;
+  min-width: 200px;
+  height: 30px;
+  padding: 1rem;
+  border: 2px var(--title-color) solid;
+  border-radius: var(--border-radius);
   display: flex;
   justify-content: center;
   align-items: center;
-
   cursor: pointer;
+  font-size: 1.5rem;
 }
 
 #money::before {
@@ -66,11 +90,11 @@
 }
 
 .modal-content {
-  margin: 0 auto;
-  height: 500px;
-  width: 800px;
-  background-color: burlywood;
-
+  padding: 3rem;
+  height: 400px;
+  width: 600px;
+  background-color: var(--bg-color);
+  border-radius: var(--border-radius);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -16,7 +16,7 @@ function showQuestion(id) {
 
   // display
   $(modalBox).addClass("opened");
-  $(modalContent).append(`<p>${qChosen.question}</p>`);
+  $(modalContent).append(`<p class="sub-title">${qChosen.question}</p>`);
 
   $.each(qChosen.choices, function (index, choice) {
     choices.push(`<div class="q-option"> ${choice} </div>`);
