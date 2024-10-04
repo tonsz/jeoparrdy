@@ -8,17 +8,26 @@
 * {
   padding: 0;
   margin: 0;
+  background-color: var(--bg-color);
+  color: #fff;
 }
 .app {
   height: 100vh;
   text-align: center;
   color: #fff;
-  background-color: var(--bg-color);
   font-family: "Bebas Neue", sans-serif;
 }
-.board {
-  margin: 0 auto;
+.top {
+  margin-top: 20px;
   max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.board {
+  max-width: 800px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,6 +46,18 @@
 }
 .q {
   font-size: 3em;
+}
+.answered {
+  visibility: hidden;
+}
+.end {
+  display: none;
+}
+.endgame {
+  display: none;
+  margin: 3rem auto;
+  height: auto;
+  width: 600px;
 }
 .sub-title {
   font-size: 2.5rem;
@@ -61,7 +82,7 @@
 }
 
 .q-option {
-  min-width: 200px;
+  width: 200px;
   height: 30px;
   padding: 1rem;
   border: 2px var(--title-color) solid;
@@ -71,6 +92,34 @@
   align-items: center;
   cursor: pointer;
   font-size: 1.5rem;
+}
+
+input {
+  text-align: center;
+  padding: 0 8px;
+  margin: 20px 0;
+  vertical-align: middle;
+  border-radius: 2px;
+  width: 200px;
+  min-height: 36px;
+  background-color: #ffffff;
+  color: #444;
+  border: 1px solid rgba(36, 28, 21, 0.3);
+  transition: all 0.2s ease-in-out 0s;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: normal;
+  :focus {
+    outline: none;
+    border: 1px solid #007c89;
+    box-shadow: inset 0 0 0 1px #007c89;
+  }
+}
+
+.btn {
+  font-size: 2rem;
+  padding: 24px 0;
+  font-family: "Bebas Neue", sans-serif;
 }
 
 #money::before {
