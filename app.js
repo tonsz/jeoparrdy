@@ -12,30 +12,41 @@ let stars = 3;
 let money = 0;
 let final = "What do you call a polygon with 20 sides?";
 let finalAnswer = "ICOSAGON";
+let answeredCount = 0;
 
 function endGame() {
-  $(modalContent).append(`<p class="sub-title">Brilliant! You've won:</p><br>`);
-  // TODO
-  $(modalContent).append(`<p class="sub-title">${money}</p><br>
-  <p>The prize will be converted to...</p><br>
-  <button class="q-option btn" type="button" id="claim">CLAIM</button> `);
-
-  $("#claim").on("click", () => {
-    $(playerMoney).addClass("end");
-    $(questionsBoard).addClass("end");
-    $(modalBox).removeClass("opened");
-    $(".top").addClass("end");
-    $(".endgame").addClass("opened");
+  $(modalContent).append(
+    `<p class="sub-title">You've won: <span class="highlight">${money}</span></p><br>`
+  );
+  $(modalContent).append(`<p class="sub-title">Thanks for playing!</p><br>`);
+  $(modalContent).append(
+    `<button class="q-option btn" type="button" id="end">Play again</button>`
+  );
+  $("#end").on("click", () => {
+    window.location.reload();
   });
 }
+
+function calcWager(isWinner, wagered) {
+  $(modalContent).html("");
+  if (isWinner) {
+    $(modalContent).append(`<p class="sub-title">Congratulations!</p><br>`);
+  } else {
+    $(modalContent).append(
+      `<p class="sub-title">Better luck next time!</p><br>`
+    );
+  }
+  endGame();
+}
 function doubleMoney() {
+  $(modalContent).html("");
   $(modalBox).addClass("opened");
   $(modalContent).append(`<p class="sub-title">${final}</p>`);
 
   $(modalContent).append(`
       <input type="text" id="finalAnswer"> 
       <p class="sub-title">Wager:</p>
-      <input type="text" id="wager"> 
+      <input type="text" id="wager" > 
       <br/>
       <button class="q-option btn" type="button" id="getFinalAnswer"> 
           Submit
@@ -44,32 +55,56 @@ function doubleMoney() {
 
   $("#getFinalAnswer").click(function () {
     const inputString = $("#finalAnswer").val().toUpperCase();
-    const wageredMoney = $("#wager").val();
-    if (wageredMoney <= money) {
-      if (inputString === finalAnswer) {
-        money += parseInt(wageredMoney);
-        $(modalContent).html("");
-        setTimeout(() => {
-          endGame();
-        }, 400);
+    const wageredMoney = parseInt($("#wager").val());
+    if (inputString && wageredMoney >= 0) {
+      if (wageredMoney <= money) {
+        if (inputString === finalAnswer) {
+          money += wageredMoney;
+          setTimeout(() => {
+            calcWager(true, wageredMoney);
+          }, 400);
+        } else {
+          money -= wageredMoney;
+          setTimeout(() => {
+            calcWager(false, wageredMoney);
+          }, 400);
+        }
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: `The wagering amount must only be equal or less than your total earnings.`,
+          color: "#fff",
+          background: "#1e0b30",
+        });
       }
     } else {
-      alert(
-        "The wagering amount must only be equal or less than your total earnings."
-      );
+      Swal.fire({
+        icon: "warning",
+        title: `Please enter your answer and wager.`,
+        color: "#fff",
+        background: "#1e0b30",
+      });
     }
   });
 }
 
-function showFinale() {
+function showFinale(isWinner) {
+  $(modalContent).html("");
   $(modalBox).addClass("opened");
-  $(modalContent).append(
-    `<p class="sub-title">You've run out of stars!</p><br>`
-  );
+
+  if (isWinner) {
+    $(modalContent).append(
+      `<p class="sub-title">You won!</p><br><p class="sub-title">You answered all the questions!</p><br>`
+    );
+  } else {
+    $(modalContent).append(
+      `<p class="sub-title">You've run out of stars!</p><br>`
+    );
+  }
 
   if (money > 0) {
     $(modalContent).append(
-      `<p class="sub-title">Total earnings: ${money}</p><br>`
+      `<p class="sub-title">Total earnings: <span class="highlight">${money}</span></p><br>`
     );
     $(modalContent).append(
       `<div id="db" class="q-option">Double my money</div><br>`
@@ -82,14 +117,13 @@ function showFinale() {
   }
 
   $("#db").on("click", () => {
-    $(modalContent).html("");
     setTimeout(() => {
       doubleMoney();
     }, 400);
   });
   $("#ig").on("click", () => {
-    $(modalContent).html("");
     setTimeout(() => {
+      $(modalContent).html("");
       endGame();
     }, 400);
   });
@@ -113,24 +147,33 @@ function showQuestion(id) {
 
   // check answer
   $(".q-option").on("click", function (event) {
+    answeredCount++;
     if (qChosen.correctAnswer === event.target.innerText) {
-      alert("Correct!"); // must change this
-
+      Swal.fire({
+        icon: "success",
+        title: "Correct!",
+        color: "#e6cd65",
+        background: "#1e0b30",
+      });
       // money calculator
       money += qChosen.amount;
       $(playerMoney).text(money.toString());
 
-      if (money >= 12000) {
-        $(modalContent).html("");
-        $(modalContent).append(
-          `<p class="sub-title">You won!</p><br>``<p class="sub-title">I love you, my brilliant girl.</p><br>`
-        );
+      if (answeredCount == questions.length) {
+        setTimeout(() => {
+          showFinale(true);
+        }, 400);
       }
       // back to board
       $(modalBox).removeClass("opened");
       $(modalContent).html("");
     } else {
-      alert(`The correct answer is ${qChosen.correctAnswer}`);
+      Swal.fire({
+        icon: "error",
+        title: `The correct answer is ${qChosen.correctAnswer}`,
+        color: "#fff",
+        background: "#1e0b30",
+      });
       $(".stars > .star:last-child").remove();
       if (stars > 1) {
         stars--;
@@ -139,11 +182,9 @@ function showQuestion(id) {
         $(modalBox).removeClass("opened");
         $(modalContent).html("");
       } else {
-        $(modalContent).html("");
         setTimeout(() => {
-          showFinale();
+          showFinale(false);
         }, 400);
-        // what happens when stars are lost
       }
     }
   });

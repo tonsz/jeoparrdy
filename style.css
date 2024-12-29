@@ -8,26 +8,31 @@
 * {
   padding: 0;
   margin: 0;
-  background-color: var(--bg-color);
   color: #fff;
+  box-sizing: border-box;
+}
+body {
+  margin: 20px auto;
+  max-width: 800px;
+  font-family: "Bebas Neue", sans-serif;
+  background-color: var(--bg-color);
 }
 .app {
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 95vh;
+  background-color: var(--bg-color);
   text-align: center;
   color: #fff;
-  font-family: "Bebas Neue", sans-serif;
 }
 .top {
   margin-top: 20px;
-  max-width: 800px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .board {
-  max-width: 800px;
-  margin: 0 auto;
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,8 +87,8 @@
 }
 
 .q-option {
-  width: 200px;
-  height: 30px;
+  width: 250px;
+  height: 70px;
   padding: 1rem;
   border: 2px var(--title-color) solid;
   border-radius: var(--border-radius);
@@ -117,6 +122,7 @@ input {
 }
 
 .btn {
+  background-color: transparent;
   font-size: 2rem;
   padding: 24px 0;
   font-family: "Bebas Neue", sans-serif;
@@ -127,6 +133,7 @@ input {
 }
 
 .modal {
+  box-sizing: unset;
   display: none;
   position: fixed;
   top: 0;
@@ -140,18 +147,45 @@ input {
 
 .modal-content {
   padding: 3rem;
-  height: 400px;
-  width: 600px;
+  height: auto;
+  width: 40%;
   background-color: var(--bg-color);
   border-radius: var(--border-radius);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  overflow: auto;
 }
 
 .opened {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.swal2-title {
+  font-size: 2.5rem;
+  padding: 0.5em 1em 0.2em;
+}
+.swal2-confirm {
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  font-family: "Bebas Neue", sans-serif;
+}
+.swal2-actions {
+  margin: 0;
+}
+.highlight {
+  color: var(--title-color);
+}
+#money {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+small {
+  color: #a6a6a6;
+  font-size: 0.7rem;
+  font-family: "Verdana", serif;
+  margin: 0 auto;
+  align-self: flex-end;
 }
