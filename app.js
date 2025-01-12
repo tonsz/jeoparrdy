@@ -8,15 +8,28 @@ const starBoard = ".stars";
 const categories = ["movies", "books", "geography", "food"];
 
 let questions = [];
-let stars = 3;
-let money = 0;
 let final = "What do you call a polygon with 20 sides?";
 let finalAnswer = "ICOSAGON";
-let answeredCount = 0;
+
+//let stars = 3;
+//let money = 0;
+//let answeredCount = 0;
+
+function saveState(state) {
+  const stateString = JSON.stringify(state);
+  localStorage.setItem("state", stateString);
+}
+
+function getState() {
+  const stateString = localStorage.getItem("state");
+  const state = JSON.parse(stateString);
+  return state;
+}
 
 function endGame() {
+  let state = getState();
   $(modalContent).append(
-    `<p class="sub-title">You've won: <span class="highlight">${money}</span></p><br>`
+    `<p class="sub-title">You've won: <span class="highlight">${state.game.money}</span></p><br>`
   );
   $(modalContent).append(`<p class="sub-title">Thanks for playing!</p><br>`);
   $(modalContent).append(
@@ -39,6 +52,7 @@ function calcWager(isWinner, wagered) {
   endGame();
 }
 function doubleMoney() {
+  let state = getState();
   $(modalContent).html("");
   $(modalBox).addClass("opened");
   $(modalContent).append(`<p class="sub-title">${final}</p>`);
@@ -57,14 +71,16 @@ function doubleMoney() {
     const inputString = $("#finalAnswer").val().toUpperCase();
     const wageredMoney = parseInt($("#wager").val());
     if (inputString && wageredMoney >= 0) {
-      if (wageredMoney <= money) {
+      if (wageredMoney <= state.game.money) {
         if (inputString === finalAnswer) {
-          money += wageredMoney;
+          state.game.money += wageredMoney;
+          saveState(state);
           setTimeout(() => {
             calcWager(true, wageredMoney);
           }, 400);
         } else {
-          money -= wageredMoney;
+          state.game.money -= wageredMoney;
+          saveState(state);
           setTimeout(() => {
             calcWager(false, wageredMoney);
           }, 400);
@@ -92,6 +108,8 @@ function showFinale(isWinner) {
   $(modalContent).html("");
   $(modalBox).addClass("opened");
 
+  let state = getState();
+
   if (isWinner) {
     $(modalContent).append(
       `<p class="sub-title">You won!</p><br><p class="sub-title">You answered all the questions!</p><br>`
@@ -102,9 +120,9 @@ function showFinale(isWinner) {
     );
   }
 
-  if (money > 0) {
+  if (state.game.money > 0) {
     $(modalContent).append(
-      `<p class="sub-title">Total earnings: <span class="highlight">${money}</span></p><br>`
+      `<p class="sub-title">Total earnings: <span class="highlight">${state.game.money}</span></p><br>`
     );
     $(modalContent).append(
       `<div id="db" class="q-option">Double my money</div><br>`
@@ -115,6 +133,8 @@ function showFinale(isWinner) {
       `<p class="sub-title">It's okay, refresh the page to try again.</p>`
     );
   }
+
+  saveState(state);
 
   $("#db").on("click", () => {
     setTimeout(() => {
@@ -134,6 +154,8 @@ function showQuestion(id) {
   let choices = [];
   console.log(id);
 
+  let state = getState();
+
   // display
   $(modalBox).addClass("opened");
   $(modalContent).append(`<p class="sub-title">${qChosen.question}</p>`);
@@ -147,7 +169,10 @@ function showQuestion(id) {
 
   // check answer
   $(".q-option").on("click", function (event) {
-    answeredCount++;
+    // save to local, must transfer to q-option clicked
+    state.game.answered.push(parseInt(id));
+    $(`#q-${id}`).addClass("answered");
+
     if (qChosen.correctAnswer === event.target.innerText) {
       Swal.fire({
         icon: "success",
@@ -156,10 +181,12 @@ function showQuestion(id) {
         background: "#1e0b30",
       });
       // money calculator
-      money += qChosen.amount;
-      $(playerMoney).text(money.toString());
+      state.game.money += qChosen.amount;
+      $(playerMoney).text(state.game.money.toString());
 
-      if (answeredCount == questions.length) {
+      saveState(state);
+
+      if (state.game.answered.length == questions.length) {
         setTimeout(() => {
           showFinale(true);
         }, 400);
@@ -175,9 +202,10 @@ function showQuestion(id) {
         background: "#1e0b30",
       });
       $(".stars > .star:last-child").remove();
-      if (stars > 1) {
-        stars--;
+      if (state.game.stars > 1) {
+        state.game.stars--;
 
+        saveState(state);
         // back to board
         $(modalBox).removeClass("opened");
         $(modalContent).html("");
@@ -190,18 +218,13 @@ function showQuestion(id) {
   });
 }
 
-function saveState(state) {
-  const stateString = JSON.stringify(state);
-  localStorage.setItem("state", stateString);
-}
 function startGame() {
   // show the game elements
   $(".top").css("visibility", "visible");
   $(".board").css("visibility", "visible");
   $(".money").css("visibility", "visible");
 
-  const stateString = localStorage.getItem("state");
-  const state = JSON.parse(stateString);
+  let state = getState();
 
   $.each(categories, function (i, category) {
     let constMarkup = `
@@ -217,6 +240,8 @@ function startGame() {
     `;
     $(starBoard).append(starMarkup);
   }
+
+  $(playerMoney).text(state.game.money.toString());
 
   // Fetch the JSON file
   $.getJSON("./questions.json", function (data) {
@@ -234,12 +259,6 @@ function startGame() {
     $(".q.box:not(.answered)").on("click", function (event) {
       let qid = event.target.id.slice(2);
       showQuestion(qid);
-
-      // save to local, must transfer to q-option clicked
-      state.game.answered.push(parseInt(qid));
-      saveState(state);
-
-      $(`#${event.target.id}`).addClass("answered");
     });
   });
 }
@@ -262,8 +281,8 @@ function welcome() {
       },
       game: {
         money: 0,
-        stars: 2,
-        answered: [2, 3],
+        stars: 3,
+        answered: [],
       },
     };
     saveState(initialState);
@@ -282,5 +301,3 @@ function init() {
 }
 
 init();
-
-// TODO - fix bug for storing answered Qs, lipat ng state variable or make a get function
