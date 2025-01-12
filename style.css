@@ -26,16 +26,21 @@ body {
   color: #fff;
 }
 .top {
+  visibility: hidden;
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .board {
+  visibility: hidden;
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.money {
+  visibility: hidden;
 }
 .box {
   /* width: 180px; */

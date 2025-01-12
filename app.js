@@ -190,7 +190,19 @@ function showQuestion(id) {
   });
 }
 
-function init() {
+function saveState(state) {
+  const stateString = JSON.stringify(state);
+  localStorage.setItem("state", stateString);
+}
+function startGame() {
+  // show the game elements
+  $(".top").css("visibility", "visible");
+  $(".board").css("visibility", "visible");
+  $(".money").css("visibility", "visible");
+
+  const stateString = localStorage.getItem("state");
+  const state = JSON.parse(stateString);
+
   $.each(categories, function (i, category) {
     let constMarkup = `
         <div class="category" id="${category}"> 
@@ -199,7 +211,7 @@ function init() {
     $(questionsBoard).append(constMarkup);
   });
 
-  for (var i = 0; i < stars; i++) {
+  for (var i = 0; i < state.game.stars; i++) {
     let starMarkup = `
         <img class="star" alt ="" src="star.png" width="50" />
     `;
@@ -211,15 +223,64 @@ function init() {
     questions = data.questions;
 
     $.each(questions, function (index, q) {
-      let questionMarkup = `<div class="q box" id="q-${index}"> ${q.amount} </div>`;
+      let className = "q box";
+      if (state.game.answered.includes(index)) {
+        className = "q box answered";
+      }
+      let questionMarkup = `<div class="${className}" id="q-${index}"> ${q.amount} </div>`;
       $(`#${q.category.toLowerCase()}`).append(questionMarkup);
     });
   }).then(function () {
     $(".q.box:not(.answered)").on("click", function (event) {
-      showQuestion(event.target.id.slice(2));
+      let qid = event.target.id.slice(2);
+      showQuestion(qid);
+
+      // save to local, must transfer to q-option clicked
+      state.game.answered.push(parseInt(qid));
+      saveState(state);
+
       $(`#${event.target.id}`).addClass("answered");
     });
   });
 }
 
+function welcome() {
+  $(modalContent).html("");
+  $(modalBox).addClass("opened");
+
+  $(modalContent).append(
+    `<div class="welcome">
+        <h1>Welcome to Jeoparrdy!</h1>
+        <button class="q-option btn" type="button" id="startGame">Play</button>
+    </div>`
+  );
+
+  $("#startGame").on("click", function (event) {
+    const initialState = {
+      app: {
+        page: "board",
+      },
+      game: {
+        money: 0,
+        stars: 2,
+        answered: [2, 3],
+      },
+    };
+    saveState(initialState);
+    startGame();
+    $(modalBox).removeClass("opened");
+    $(modalContent).html("");
+  });
+}
+
+function init() {
+  if (!localStorage.getItem("state")) {
+    welcome();
+  } else {
+    startGame();
+  }
+}
+
 init();
+
+// TODO - fix bug for storing answered Qs, lipat ng state variable or make a get function
