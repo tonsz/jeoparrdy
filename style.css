@@ -218,3 +218,20 @@ small {
   margin: 0 auto;
   align-self: flex-end;
 }
+
+@media screen and (max-width: 480px) {
+  .modal-content {
+    padding: 2rem;
+    height: auto;
+    width: 85%;
+  }
+  .welcome > h1 {
+    font-size: 3em;
+  }
+  .q {
+    font-size: 2.5em;
+  }
+  .cat-title {
+    font-size: 1.25em;
+  }
+}
