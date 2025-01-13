@@ -1,4 +1,5 @@
 {
+  "categories": ["movies", "books", "geography", "food"],
   "questions": [
     {
       "question": "Who directed the movie 'Inception'?",

@@ -5,15 +5,10 @@ const modalContent = ".modal-content";
 const playerMoney = "#money";
 const starBoard = ".stars";
 
-const categories = ["movies", "books", "geography", "food"];
-
+let categories = [];
 let questions = [];
 let final = "What do you call a polygon with 20 sides?";
 let finalAnswer = "ICOSAGON";
-
-//let stars = 3;
-//let money = 0;
-//let answeredCount = 0;
 
 function saveState(state) {
   const stateString = JSON.stringify(state);
@@ -28,6 +23,7 @@ function getState() {
 
 function endGame() {
   let state = getState();
+
   $(modalContent).append(
     `<p class="sub-title">You've won: <span class="highlight">${state.game.money}</span></p><br>`
   );
@@ -36,6 +32,7 @@ function endGame() {
     `<button class="q-option btn" type="button" id="end">Play again</button>`
   );
   $("#end").on("click", () => {
+    localStorage.clear();
     window.location.reload();
   });
 }
@@ -53,8 +50,10 @@ function calcWager(isWinner, wagered) {
 }
 function doubleMoney() {
   let state = getState();
+
   $(modalContent).html("");
   $(modalBox).addClass("opened");
+
   $(modalContent).append(`<p class="sub-title">${final}</p>`);
 
   $(modalContent).append(`
@@ -105,10 +104,10 @@ function doubleMoney() {
 }
 
 function showFinale(isWinner) {
+  let state = getState();
+
   $(modalContent).html("");
   $(modalBox).addClass("opened");
-
-  let state = getState();
 
   if (isWinner) {
     $(modalContent).append(
@@ -152,7 +151,6 @@ function showFinale(isWinner) {
 function showQuestion(id) {
   let qChosen = questions[id];
   let choices = [];
-  console.log(id);
 
   let state = getState();
 
@@ -169,7 +167,6 @@ function showQuestion(id) {
 
   // check answer
   $(".q-option").on("click", function (event) {
-    // save to local, must transfer to q-option clicked
     state.game.answered.push(parseInt(id));
     $(`#q-${id}`).addClass("answered");
 
@@ -219,33 +216,29 @@ function showQuestion(id) {
 }
 
 function startGame() {
-  // show the game elements
-  $(".top").css("visibility", "visible");
-  $(".board").css("visibility", "visible");
-  $(".money").css("visibility", "visible");
-
   let state = getState();
-
-  $.each(categories, function (i, category) {
-    let constMarkup = `
-        <div class="category" id="${category}"> 
-          <div class="box cat-title">${category}</div> 
-        </div>`;
-    $(questionsBoard).append(constMarkup);
-  });
-
-  for (var i = 0; i < state.game.stars; i++) {
-    let starMarkup = `
-        <img class="star" alt ="" src="star.png" width="50" />
-    `;
-    $(starBoard).append(starMarkup);
-  }
-
-  $(playerMoney).text(state.game.money.toString());
 
   // Fetch the JSON file
   $.getJSON("./questions.json", function (data) {
     questions = data.questions;
+    categories = data.categories;
+
+    $.each(categories, function (i, category) {
+      let constMarkup = `
+          <div class="category" id="${category}"> 
+            <div class="box cat-title">${category}</div> 
+          </div>`;
+      $(questionsBoard).append(constMarkup);
+    });
+
+    for (var i = 0; i < state.game.stars; i++) {
+      let starMarkup = `
+          <img class="star" alt ="" src="star.png" width="50" />
+      `;
+      $(starBoard).append(starMarkup);
+    }
+
+    $(playerMoney).text(state.game.money.toString());
 
     $.each(questions, function (index, q) {
       let className = "q box";
@@ -256,6 +249,10 @@ function startGame() {
       $(`#${q.category.toLowerCase()}`).append(questionMarkup);
     });
   }).then(function () {
+    $(".top").css("visibility", "visible");
+    $(".board").css("visibility", "visible");
+    $(".money").css("visibility", "visible");
+
     $(".q.box:not(.answered)").on("click", function (event) {
       let qid = event.target.id.slice(2);
       showQuestion(qid);
@@ -269,8 +266,11 @@ function welcome() {
 
   $(modalContent).append(
     `<div class="welcome">
-        <h1>Welcome to Jeoparrdy!</h1>
-        <button class="q-option btn" type="button" id="startGame">Play</button>
+        <h1>Jeoparrdy!</h1>
+        <p><span class=highlight>Jeoparrdy!</span> is a single-player, multiple-choice, trivia game based on the <a href="https://en.wikipedia.org/wiki/Jeopardy!" target="_blank">American television game show</a>.</p>
+        <p>A player starts with 3 stars. Points are earned for correct answer and a star is deducted for every wrong answer.</p>
+        <p>Ready to get the highest score? :D</p>
+        <button class="q-option btn" type="button" id="startGame">Start</button>
     </div>`
   );
 
