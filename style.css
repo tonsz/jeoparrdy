@@ -26,12 +26,11 @@ body {
   text-align: center;
   color: #fff;
 }
-.top {
+.bottom {
   visibility: hidden;
-  margin-top: 20px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
 }
 .welcome {
   display: flex;
@@ -63,7 +62,6 @@ body {
   visibility: hidden;
 }
 .box {
-  /* width: 180px; */
   height: 80px;
   background-color: var(--box-color);
   color: var(--title-color);
@@ -220,6 +218,9 @@ small {
 }
 
 @media screen and (max-width: 480px) {
+  body {
+    margin: 10px auto;
+  }
   .modal-content {
     padding: 2rem;
     height: auto;
@@ -230,6 +231,9 @@ small {
   }
   .q {
     font-size: 2.5em;
+  }
+  .box {
+    margin: 5px;
   }
   .cat-title {
     font-size: 1.25em;

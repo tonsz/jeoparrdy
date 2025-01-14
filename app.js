@@ -249,7 +249,7 @@ function startGame() {
       $(`#${q.category.toLowerCase()}`).append(questionMarkup);
     });
   }).then(function () {
-    $(".top").css("visibility", "visible");
+    $(".bottom").css("visibility", "visible");
     $(".board").css("visibility", "visible");
     $(".money").css("visibility", "visible");
 
