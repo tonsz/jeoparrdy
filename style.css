@@ -4,6 +4,7 @@
   --bg-color: #1e0b30;
   --box-color: rgb(85, 13, 139);
   --title-color: #eaaf57;
+  --bar-color: #8f601a;
   --border-radius: 4px;
 }
 * {
@@ -184,6 +185,7 @@ input {
   flex-direction: column;
   overflow: auto;
   border: 10px solid #eaaf57;
+  position: relative;
 }
 
 .opened {
@@ -217,7 +219,15 @@ small {
   margin: 0 auto;
   align-self: flex-end;
 }
-
+.timer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background-color: var(--bar-color);
+  transition: width 1s linear;
+}
 @media screen and (max-width: 480px) {
   body {
     margin: 10px auto;

@@ -4,11 +4,14 @@ const modalBox = ".modal";
 const modalContent = ".modal-content";
 const playerMoney = "#money";
 const starBoard = ".stars";
+const timePerQuestion = 30;
 
 let categories = [];
 let questions = [];
 let final = "What do you call a polygon with 20 sides?";
 let finalAnswer = "ICOSAGON";
+let intervalId;
+let seconds = 30;
 
 function saveState(state) {
   const stateString = JSON.stringify(state);
@@ -148,6 +151,54 @@ function showFinale(isWinner) {
   });
 }
 
+function markAnswered(state, id) {
+  state.game.answered.push(parseInt(id));
+  $(`#q-${id}`).addClass("answered");
+  saveState();
+}
+
+function deductStar(state) {
+  $(".stars > .star:last-child").remove();
+  state.game.stars--;
+  if (state.game.stars >= 1) {
+    saveState(state);
+    // back to board
+    $(modalBox).removeClass("opened");
+    $(modalContent).html("");
+  } else {
+    state.game.status = "finale";
+    saveState(state);
+    setTimeout(() => {
+      showFinale(false);
+    }, 400);
+  }
+}
+
+function restartTimer() {
+  clearInterval(intervalId);
+  intervalId = null;
+  seconds = timePerQuestion;
+}
+
+function startTimer(state, id) {
+  if (seconds > 0) {
+    seconds--;
+    document.querySelector(".timer").style.width = `${
+      (seconds / timePerQuestion) * 100
+    }%`;
+  } else {
+    markAnswered(state, id);
+    restartTimer();
+    Swal.fire({
+      icon: "error",
+      title: `Out of time! The correct answer is ${questions[id].correctAnswer}`,
+      color: "#fff",
+      background: "#1e0b30",
+    });
+    deductStar(state);
+  }
+}
+
 function showQuestion(id) {
   let qChosen = questions[id];
   let choices = [];
@@ -164,11 +215,17 @@ function showQuestion(id) {
 
   let chMarkup = choices.join("");
   $(modalContent).append(`<div class="choices"> ${chMarkup} </div>`);
+  $(modalContent).append(`<div class="timer"></div>`);
+
+  if (!intervalId) {
+    // startTimer(state, id);
+    intervalId = setInterval(startTimer, 1000, state, id);
+  }
 
   // check answer
   $(".q-option").on("click", function (event) {
-    state.game.answered.push(parseInt(id));
-    $(`#q-${id}`).addClass("answered");
+    markAnswered(state, id);
+    restartTimer();
 
     if (qChosen.correctAnswer === event.target.innerText) {
       Swal.fire({
@@ -184,6 +241,8 @@ function showQuestion(id) {
       saveState(state);
 
       if (state.game.answered.length == questions.length) {
+        state.game.status = "finale";
+        saveState(state);
         setTimeout(() => {
           showFinale(true);
         }, 400);
@@ -198,19 +257,7 @@ function showQuestion(id) {
         color: "#fff",
         background: "#1e0b30",
       });
-      $(".stars > .star:last-child").remove();
-      if (state.game.stars > 1) {
-        state.game.stars--;
-
-        saveState(state);
-        // back to board
-        $(modalBox).removeClass("opened");
-        $(modalContent).html("");
-      } else {
-        setTimeout(() => {
-          showFinale(false);
-        }, 400);
-      }
+      deductStar(state);
     }
   });
 }
@@ -248,6 +295,15 @@ function startGame() {
       let questionMarkup = `<div class="${className}" id="q-${index}"> ${q.amount} </div>`;
       $(`#${q.category.toLowerCase()}`).append(questionMarkup);
     });
+
+    // check if the player is in finale
+    if (state.game.status === "finale") {
+      if (state.game.answered.length == questions.length) {
+        showFinale(true);
+      } else {
+        showFinale(false);
+      }
+    }
   }).then(function () {
     $(".bottom").css("visibility", "visible");
     $(".board").css("visibility", "visible");
@@ -283,6 +339,7 @@ function welcome() {
         money: 0,
         stars: 3,
         answered: [],
+        status: "board",
       },
     };
     saveState(initialState);
