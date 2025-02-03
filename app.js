@@ -13,6 +13,8 @@ let finalAnswer = "ICOSAGON";
 let intervalId;
 let seconds = 30;
 
+var sfx = new Audio("thinking-music.mp3");
+
 function saveState(state) {
   const stateString = JSON.stringify(state);
   localStorage.setItem("state", stateString);
@@ -263,7 +265,10 @@ function showQuestion(id) {
 }
 
 function startGame() {
+  sfx.loop = true;
+
   let state = getState();
+  let fadeTime = 600;
 
   // Fetch the JSON file
   $.getJSON("./questions.json", function (data) {
@@ -275,7 +280,8 @@ function startGame() {
           <div class="category" id="${category}"> 
             <div class="box cat-title">${category}</div> 
           </div>`;
-      $(questionsBoard).append(constMarkup);
+      $(questionsBoard).append($(constMarkup).hide().fadeIn(fadeTime));
+      fadeTime += 600;
     });
 
     for (var i = 0; i < state.game.stars; i++) {
@@ -308,6 +314,15 @@ function startGame() {
     $(".bottom").css("visibility", "visible");
     $(".board").css("visibility", "visible");
     $(".money").css("visibility", "visible");
+    $("#audioControl").on("click", function (event) {
+      if (sfx.paused) {
+        event.target.innerText = "🔊";
+        sfx.play();
+      } else {
+        event.target.innerText = "🔇";
+        sfx.pause();
+      }
+    });
 
     $(".q.box:not(.answered)").on("click", function (event) {
       let qid = event.target.id.slice(2);

@@ -1,6 +1,7 @@
-- ~~timer styling~~
-- state for ~~finale~~, endgame, thanks modal
-- ~~refactor (repeating functions)~~
+# to-do
 
-- add sounds
-- add board animation
+- ~~timer styling~~
+- state for ~~finale~~, endgame / thanks modal
+- ~~refactor (repeating functions)~~
+- ~~add sounds~~
+- ~~add board animation~~

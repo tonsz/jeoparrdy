@@ -4,7 +4,7 @@
   --bg-color: #1e0b30;
   --box-color: rgb(85, 13, 139);
   --title-color: #eaaf57;
-  --bar-color: #8f601a;
+  --bar-color: #973610;
   --border-radius: 4px;
 }
 * {
@@ -30,8 +30,8 @@ body {
 .bottom {
   visibility: hidden;
   display: flex;
-  justify-content: space-between;
-  align-items: start;
+  justify-content: center;
+  align-items: center;
 }
 .welcome {
   display: flex;
@@ -59,8 +59,15 @@ body {
   justify-content: center;
   align-items: center;
 }
+.stars {
+  flex: 1;
+}
 .money {
   visibility: hidden;
+}
+#audioControl {
+  font-size: 3rem;
+  cursor: pointer;
 }
 .box {
   height: 80px;
@@ -210,7 +217,6 @@ input {
 }
 #money {
   font-size: 3rem;
-  margin-bottom: 2rem;
 }
 small {
   color: #a6a6a6;
@@ -227,6 +233,13 @@ small {
   height: 10px;
   background-color: var(--bar-color);
   transition: width 1s linear;
+}
+.q.box {
+  transition: all 0.2s linear;
+}
+.q.box:hover {
+  background-color: #eaaf57;
+  color: var(--box-color);
 }
 @media screen and (max-width: 480px) {
   body {
